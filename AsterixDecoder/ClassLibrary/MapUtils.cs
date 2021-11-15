@@ -16,7 +16,7 @@ namespace ClassLibrary
         public DataTable ADS_B = new DataTable();
         MySqlConnection myConnection;
 
-        public void LoadDataSMR(String time_from, String time_to)
+        public bool LoadDataSMR(String time_from, String time_to)
         {
             string command = "";
             command = "SELECT Time_of_day,Position_in_Polar_Coordinates,Position_in_Cartesian_Coordinates,Track_Velocity_in_Polar_Coordinates,Track_Velocity_in_Cartesian_Coordinates,Track_Number,Target_ID FROM t_cat10 WHERE SIC = '7'";
@@ -33,15 +33,17 @@ namespace ClassLibrary
                 myAdapter.SelectCommand = cmd;
                 myAdapter.Fill(SMR);
                 myAdapter.Update(SMR);
-
             }
             catch (MySqlException ex)
             {
-                Console.WriteLine("Error" + ex.ToString());
             }
+            if (SMR.Rows.Count == 0)
+                return false;
+            else
+                return true;
         }
 
-        public void LoadDataMLAT(String time_from, String time_to)
+        public bool LoadDataMLAT(String time_from, String time_to)
         {
             string command = "";
             command = "SELECT Time_of_day,Position_in_Polar_Coordinates,Position_in_Cartesian_Coordinates,Track_Velocity_in_Polar_Coordinates,Track_Velocity_in_Cartesian_Coordinates,Track_Number,Target_ID FROM t_cat10 WHERE SIC = '107'";
@@ -62,11 +64,14 @@ namespace ClassLibrary
             }
             catch (MySqlException ex)
             {
-                Console.WriteLine("Error" + ex.ToString());
             }
+            if (MLAT.Rows.Count == 0)
+                return false;
+            else
+                return true;
         }
 
-        public void LoadDataADS_B(String time_from, String time_to)
+        public bool LoadDataADS_B(String time_from, String time_to)
         {
             string command = "";
             command = "SELECT Time_of_Report_Transmission,Position_in_WGS84_Coordinates,Flight_Level,Mode_3A_Code,Track_Number,Target_Identification FROM t_cat21 WHERE";
@@ -83,12 +88,14 @@ namespace ClassLibrary
                 myAdapter.SelectCommand = cmd;
                 myAdapter.Fill(ADS_B);
                 myAdapter.Update(ADS_B);
-
             }
             catch (MySqlException ex)
             {
-                Console.WriteLine("Error" + ex.ToString());
             }
+            if (ADS_B.Rows.Count == 0)
+                return false;
+            else
+                return true;
         }
 
         public double[] getPositionADS_B(int i)
@@ -119,6 +126,19 @@ namespace ClassLibrary
             int y = Convert.ToInt32(xy[1].Split(':')[1]);
 
             int[] myxy = { x, y};
+            return myxy;
+        }
+
+        public int[] getPositionMLAT_cartesian(int i)
+        {
+            //La posició està a la columna 2
+            string coordinates = MLAT.Rows[i]["Position_in_Cartesian_Coordinates"].ToString();
+            string[] xy = coordinates.Split('m');
+
+            int x = Convert.ToInt32(xy[0].Split(':')[1]);
+            int y = Convert.ToInt32(xy[1].Split(':')[1]);
+
+            int[] myxy = { x, y };
             return myxy;
         }
     }

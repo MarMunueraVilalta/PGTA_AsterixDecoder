@@ -93,7 +93,13 @@ namespace AsterixDecoder
         public void ShowData(int low)
         {
             if (SelectDataToShow.SelectedItem == null)
-            { }
+            {
+                // Alert Message Box
+                string message = "Data cannot be loaded if the category isn't specified";
+                string title = "Alert Message";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result = MessageBox.Show(message, title, buttons, MessageBoxIcon.Warning);
+            }
             else
             {
                 String cat = SelectDataToShow.SelectedItem.ToString();
@@ -373,5 +379,142 @@ namespace AsterixDecoder
             }
             catch { }
         }*/
+
+        private void SQLToCSV(string query, string Filename)
+        {
+
+            DBHelper db = new DBHelper();
+            myConnection = db.ConnectToMyDatabase();
+            MySqlCommand cmd = new MySqlCommand(query, myConnection);
+            MySqlDataReader dr = cmd.ExecuteReader();
+
+            using (System.IO.StreamWriter fs = new System.IO.StreamWriter(Filename))
+            {
+                // Loop through the fields and add headers
+                for (int i = 0; i < dr.FieldCount; i++)
+                {
+                    string name = dr.GetName(i);
+                    if (name.Contains(","))
+                        name = "\"" + name + "\"";
+
+                    fs.Write(name + ",");
+                }
+                fs.WriteLine();
+
+                // Loop through the rows and output the data
+                while (dr.Read())
+                {
+                    for (int i = 0; i < dr.FieldCount; i++)
+                    {
+                        string value = dr[i].ToString();
+                        if (value.Contains(","))
+                            value = "\"" + value + "\"";
+
+                        fs.Write(value + ",");
+                    }
+                    fs.WriteLine();
+                }
+
+                fs.Close();
+            }
+        }
+
+        public string command_generator_csv(string cat1)
+        {
+            string command = "SELECT * FROM " + cat1;
+            int count = 0;
+
+            if (cat1 == "t_cat10")
+            {
+                if (checkBox_datefilter_cat10.Checked == true || checkBox_trackfilter_cat10.Checked == true || checkBox_targetid_cat10.Checked == true || checkBox_mode3A_cat10.Checked == true)
+                    command = command + " WHERE";
+                if (checkBox_datefilter_cat10.Checked == true)
+                {
+                    command = command + " Time_of_day BETWEEN STR_TO_DATE('" + dateTimePicker1_cat10.Text + "','%h:%i:%s') AND STR_TO_DATE('" + dateTimePicker2_cat10.Text + "','%h:%i:%s')";
+                    count++;
+                }
+
+                if (checkBox_trackfilter_cat10.Checked == true)
+                {
+                    if (count > 0)
+                        command = command + " AND ";
+                    command = command + " Track_Number LIKE '%" + tracknumber_tb_cat10.Text + "%'";
+                    count++;
+                }
+
+                if (checkBox_mode3A_cat10.Checked == true)
+                {
+                    if (count > 0)
+                        command = command + " AND ";
+                    command = command + " Mode_3A LIKE '%" + mode3A_tb_cat10.Text + "%'";
+                    count++;
+                }
+
+                if (checkBox_targetid_cat10.Checked == true)
+                {
+                    if (count > 0)
+                        command = command + " AND ";
+                    command = command + " Target_ID LIKE '%" + targetid_tb_cat10.Text + "%'";
+                    count++;
+                }
+            }
+            else
+            {
+                if (checkBox_datefilter_cat21.Checked == true || checkBox_trackfilter_cat21.Checked == true || checkBox_targetid_cat21.Checked == true || checkBox_mode3A_cat21.Checked == true)
+                    command = command + " WHERE";
+                if (checkBox_datefilter_cat21.Checked == true)
+                {
+                    command = command + " Time_of_Report_Transmission BETWEEN STR_TO_DATE('" + dateTimePicker1_cat21.Text + "','%h:%i:%s') AND STR_TO_DATE('" + dateTimePicker2_cat21.Text + "','%h:%i:%s')";
+                    count++;
+                }
+
+                if (checkBox_trackfilter_cat21.Checked == true)
+                {
+                    if (count > 0)
+                        command = command + " AND ";
+                    command = command + " Track_Number LIKE '%" + tracknumber_tb_cat21.Text + "%'";
+                    count++;
+                }
+
+                if (checkBox_mode3A_cat21.Checked == true)
+                {
+                    if (count > 0)
+                        command = command + " AND ";
+                    command = command + " Mode_3A_Code LIKE '%" + mode3A_tb_cat21.Text + "%'";
+                    count++;
+                }
+
+                if (checkBox_targetid_cat21.Checked == true)
+                {
+                    if (count > 0)
+                        command = command + " AND ";
+                    command = command + " Target_Identification LIKE '%" + targetid_tb_cat21.Text + "%'";
+                    count++;
+                }
+            }
+
+            command = command + ";";
+
+            return command;
+        }
+
+        private void Excel_button_Click_1(object sender, EventArgs e)
+        {
+            String cat = SelectDataToShow.SelectedItem.ToString();
+            String cat1 = "";
+            if (cat == "Cat 21")
+            {
+                cat1 = "t_cat21";
+            }
+            else
+            {
+                cat1 = "t_cat10";
+            }
+
+            //////////////////////////////////////////////
+
+            string command = command_generator_csv(cat1);
+            SQLToCSV(command, "File");
+        }
     }
 }
