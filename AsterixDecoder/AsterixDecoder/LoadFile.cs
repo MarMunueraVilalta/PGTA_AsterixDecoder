@@ -43,8 +43,9 @@ namespace AsterixDecoder
         {
             Map f_m = new Map();
             this.Hide();
+            f_m.setLoadFile(this);
             f_m.ShowDialog();
-            this.Close();
+            //this.Close();
         }
 
         public void LoadTable()

@@ -38,6 +38,7 @@ namespace AsterixDecoder
         bool SMR_loaded = false;
         bool MLAT_loaded = false;
         bool ADS_B_loaded = false;
+        LoadFile f_m;
 
         bool ticking = false;
 
@@ -59,6 +60,10 @@ namespace AsterixDecoder
             resume_btn.Visible = false;
         }
 
+        public void setLoadFile(LoadFile loadfile)
+        {
+            f_m = loadfile;
+        }
 
         private void buttonMap_Click(object sender, EventArgs e)
         {
@@ -73,14 +78,6 @@ namespace AsterixDecoder
             Table_form f_tf = new Table_form();
             this.Hide();
             f_tf.ShowDialog();
-            this.Close();
-        }
-
-        private void buttonLoadFile_Click(object sender, EventArgs e)
-        {
-            LoadFile f_lf = new LoadFile();
-            this.Hide();
-            f_lf.ShowDialog();
             this.Close();
         }
 
@@ -471,6 +468,23 @@ namespace AsterixDecoder
             one_second_counter_ADS_B = 0;
             one_second_counter_MLAT = 0;
             one_second_counter_SMR = 0;
+        }
+
+        private void buttonLoadFile_Click_1(object sender, EventArgs e)
+        {
+            if (f_m == null)
+            {
+                f_m = new LoadFile();
+                this.Hide();
+                f_m.ShowDialog();
+                this.Close();
+            }
+            else
+            {
+                this.Hide();
+                f_m.Show();
+                this.Close();
+            }
         }
     }
 }
