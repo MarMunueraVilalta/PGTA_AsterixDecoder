@@ -40,5 +40,13 @@ namespace AsterixDecoder
             f_lf.ShowDialog();
             this.Close();
         }
+
+        private void button_Help_Click(object sender, EventArgs e)
+        {
+            Help f_h = new Help();
+            //this.Hide();
+            f_h.ShowDialog();
+            //this.Close();
+        }
     }
 }

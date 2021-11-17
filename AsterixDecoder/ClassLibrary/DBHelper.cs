@@ -15,7 +15,7 @@ namespace ClassLibrary
             String servidor = "127.0.0.1";
             String puerto = "3306";
             String usuario = "root";
-            String password = "mysql";
+            String password = "mar88";
             //String password = "mysql";
             String database = "bbdd_asterix";
 

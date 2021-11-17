@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Win32;
 
 namespace AsterixDecoder
 {
@@ -514,7 +515,115 @@ namespace AsterixDecoder
             //////////////////////////////////////////////
 
             string command = command_generator_csv(cat1);
-            SQLToCSV(command, "File");
+
+            //Agafo el path del fitxer
+            /*
+            OpenFileDialog saveFileDialog1 = new OpenFileDialog();
+            saveFileDialog1.Filter = "csv files (*.csv*)|*.csv*";
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                this.path = saveFileDialog1.FileName;
+            }
+            */
+
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.ShowDialog();
+            saveFileDialog1.Filter = "csv files (*.csv*)|*.csv*";
+            string path0 = saveFileDialog1.FileName;
+            string path = path0 + ".csv";
+
+            SQLToCSV(command, path);
+        }
+
+        private void SQLToCSV2(string query, string Filename, string cat1)
+        {
+
+            string command = "SELECT * UNION * FROM " + cat1;
+            int count = 0;
+
+            if (cat1 == "t_cat10")
+            {
+                if (checkBox_datefilter_cat10.Checked == true || checkBox_trackfilter_cat10.Checked == true || checkBox_targetid_cat10.Checked == true || checkBox_mode3A_cat10.Checked == true)
+                    command = command + " WHERE";
+                if (checkBox_datefilter_cat10.Checked == true)
+                {
+                    command = command + " Time_of_day BETWEEN STR_TO_DATE('" + dateTimePicker1_cat10.Text + "','%h:%i:%s') AND STR_TO_DATE('" + dateTimePicker2_cat10.Text + "','%h:%i:%s')";
+                    count++;
+                }
+
+                if (checkBox_trackfilter_cat10.Checked == true)
+                {
+                    if (count > 0)
+                        command = command + " AND ";
+                    command = command + " Track_Number LIKE '%" + tracknumber_tb_cat10.Text + "%'";
+                    count++;
+                }
+
+                if (checkBox_mode3A_cat10.Checked == true)
+                {
+                    if (count > 0)
+                        command = command + " AND ";
+                    command = command + " Mode_3A LIKE '%" + mode3A_tb_cat10.Text + "%'";
+                    count++;
+                }
+
+                if (checkBox_targetid_cat10.Checked == true)
+                {
+                    if (count > 0)
+                        command = command + " AND ";
+                    command = command + " Target_ID LIKE '%" + targetid_tb_cat10.Text + "%'";
+                    count++;
+                }
+            }
+            else
+            {
+                if (checkBox_datefilter_cat21.Checked == true || checkBox_trackfilter_cat21.Checked == true || checkBox_targetid_cat21.Checked == true || checkBox_mode3A_cat21.Checked == true)
+                    command = command + " WHERE";
+                if (checkBox_datefilter_cat21.Checked == true)
+                {
+                    command = command + " Time_of_Report_Transmission BETWEEN STR_TO_DATE('" + dateTimePicker1_cat21.Text + "','%h:%i:%s') AND STR_TO_DATE('" + dateTimePicker2_cat21.Text + "','%h:%i:%s')";
+                    count++;
+                }
+
+                if (checkBox_trackfilter_cat21.Checked == true)
+                {
+                    if (count > 0)
+                        command = command + " AND ";
+                    command = command + " Track_Number LIKE '%" + tracknumber_tb_cat21.Text + "%'";
+                    count++;
+                }
+
+                if (checkBox_mode3A_cat21.Checked == true)
+                {
+                    if (count > 0)
+                        command = command + " AND ";
+                    command = command + " Mode_3A_Code LIKE '%" + mode3A_tb_cat21.Text + "%'";
+                    count++;
+                }
+
+                if (checkBox_targetid_cat21.Checked == true)
+                {
+                    if (count > 0)
+                        command = command + " AND ";
+                    command = command + " Target_Identification LIKE '%" + targetid_tb_cat21.Text + "%'";
+                    count++;
+                }
+            }
+            //command = "INRO OUTFILE '" + path + "' FIELDS ENCLOSED BY '"' TERMINATED BY '+" ESCAPED BY '"' LINES TERMINATED BY '\r\n');";
+            command = command + ";";
+
+            DBHelper db = new DBHelper();
+            myConnection = db.ConnectToMyDatabase();
+            MySqlCommand cmd = new MySqlCommand(query, myConnection);
+
+        }
+
+        private void button_Help_Click(object sender, EventArgs e)
+        {
+            Help f_h = new Help();
+            //this.Hide();
+            f_h.ShowDialog();
+            //this.Close();
         }
     }
 }

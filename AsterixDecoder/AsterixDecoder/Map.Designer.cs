@@ -50,6 +50,7 @@ namespace AsterixDecoder
             this.pause_btn = new System.Windows.Forms.Button();
             this.resume_btn = new System.Windows.Forms.Button();
             this.stop_btn = new System.Windows.Forms.Button();
+            this.button_Help = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             this.panelTitleBar.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -72,7 +73,7 @@ namespace AsterixDecoder
             this.label2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.label2.Location = new System.Drawing.Point(8, 25);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(156, 22);
+            this.label2.Size = new System.Drawing.Size(199, 30);
             this.label2.TabIndex = 3;
             this.label2.Text = "PUT LOGO HERE";
             // 
@@ -93,7 +94,7 @@ namespace AsterixDecoder
             this.label1.ForeColor = System.Drawing.SystemColors.Desktop;
             this.label1.Location = new System.Drawing.Point(581, 17);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(176, 33);
+            this.label1.Size = new System.Drawing.Size(218, 40);
             this.label1.TabIndex = 2;
             this.label1.Text = "MAP VIEWER";
             // 
@@ -149,6 +150,7 @@ namespace AsterixDecoder
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
+            this.panel1.Controls.Add(this.button_Help);
             this.panel1.Controls.Add(this.buttonMap);
             this.panel1.Controls.Add(this.buttonLoadFile);
             this.panel1.Controls.Add(this.buttonLoadDecoder);
@@ -231,7 +233,7 @@ namespace AsterixDecoder
             this.checkBox_SMR.Location = new System.Drawing.Point(572, 89);
             this.checkBox_SMR.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBox_SMR.Name = "checkBox_SMR";
-            this.checkBox_SMR.Size = new System.Drawing.Size(93, 20);
+            this.checkBox_SMR.Size = new System.Drawing.Size(98, 21);
             this.checkBox_SMR.TabIndex = 32;
             this.checkBox_SMR.Text = "Show SMR";
             this.checkBox_SMR.UseVisualStyleBackColor = true;
@@ -242,7 +244,7 @@ namespace AsterixDecoder
             this.checkBox_MLAT.Location = new System.Drawing.Point(572, 119);
             this.checkBox_MLAT.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBox_MLAT.Name = "checkBox_MLAT";
-            this.checkBox_MLAT.Size = new System.Drawing.Size(99, 20);
+            this.checkBox_MLAT.Size = new System.Drawing.Size(105, 21);
             this.checkBox_MLAT.TabIndex = 33;
             this.checkBox_MLAT.Text = "Show MLAT";
             this.checkBox_MLAT.UseVisualStyleBackColor = true;
@@ -253,7 +255,7 @@ namespace AsterixDecoder
             this.checkBox_ADS_B.Location = new System.Drawing.Point(697, 89);
             this.checkBox_ADS_B.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBox_ADS_B.Name = "checkBox_ADS_B";
-            this.checkBox_ADS_B.Size = new System.Drawing.Size(104, 20);
+            this.checkBox_ADS_B.Size = new System.Drawing.Size(110, 21);
             this.checkBox_ADS_B.TabIndex = 34;
             this.checkBox_ADS_B.Text = "Show ADS-B";
             this.checkBox_ADS_B.UseVisualStyleBackColor = true;
@@ -293,6 +295,22 @@ namespace AsterixDecoder
             this.stop_btn.Text = "Stop";
             this.stop_btn.UseVisualStyleBackColor = true;
             this.stop_btn.Click += new System.EventHandler(this.stop_btn_Click);
+            // 
+            // button_Help
+            // 
+            this.button_Help.FlatAppearance.BorderSize = 0;
+            this.button_Help.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightPink;
+            this.button_Help.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_Help.Font = new System.Drawing.Font("Century Gothic", 10.2F);
+            this.button_Help.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.button_Help.Location = new System.Drawing.Point(0, 687);
+            this.button_Help.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button_Help.Name = "button_Help";
+            this.button_Help.Size = new System.Drawing.Size(267, 62);
+            this.button_Help.TabIndex = 38;
+            this.button_Help.Text = "HELP";
+            this.button_Help.UseVisualStyleBackColor = true;
+            this.button_Help.Click += new System.EventHandler(this.button_Help_Click);
             // 
             // Map
             // 
@@ -346,5 +364,6 @@ namespace AsterixDecoder
         private System.Windows.Forms.Button pause_btn;
         private System.Windows.Forms.Button resume_btn;
         private System.Windows.Forms.Button stop_btn;
+        private System.Windows.Forms.Button button_Help;
     }
 }

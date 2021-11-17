@@ -144,5 +144,14 @@ namespace AsterixDecoder
 
             this.LoadTime_lbl1.Refresh();
         }
+
+        private void button_Help_Click(object sender, EventArgs e)
+        {
+            Help f_h = new Help();
+            //this.Hide();
+            f_h.ShowDialog();
+            //this.Close();
+        }
+
     }
 }
